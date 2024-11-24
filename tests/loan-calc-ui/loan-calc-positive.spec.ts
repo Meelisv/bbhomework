@@ -41,7 +41,7 @@ test('Verifying random values', async ({ browser }) => {
 
   //monthly payment verify check
   const monthlyPaymentLocator = await page.locator('.bb-labeled-value__value');
-  await expect(monthlyPaymentLocator).toHaveText(`€${expectedMonthlyPayment}`, { timeout: 5000 });
+  await expect(monthlyPaymentLocator).toHaveText(`€${expectedMonthlyPayment}`, { timeout: 1000 });
   console.log('Monthly Payment for', loanAmount, '+', loanPeriod, 'months:', expectedMonthlyPayment); // placeholder print
 
   await context.close();
@@ -69,7 +69,7 @@ test('Verifying minimum values', async ({ browser }) => {
   
   //monthly payment verify check
   const monthlyPaymentLocator = await page.locator('.bb-labeled-value__value');
-  await expect(monthlyPaymentLocator).toHaveText(`€${expectedMonthlyPayment}`, { timeout: 5000 });
+  await expect(monthlyPaymentLocator).toHaveText(`€${expectedMonthlyPayment}`, { timeout: 1000 });
   console.log('Monthly Payment for', loanAmount, '+', loanPeriod, 'months:', expectedMonthlyPayment); // placeholder print
   await context.close();
 
@@ -96,7 +96,7 @@ test('Verifying maximum values', async ({ browser }) => {
   
   //monthly payment verify check
   const monthlyPaymentLocator1 = await page.locator('.bb-labeled-value__value');
-  await expect(monthlyPaymentLocator1).toHaveText(`€${expectedMonthlyPayment}`, { timeout: 5000 });
+  await expect(monthlyPaymentLocator1).toHaveText(`€${expectedMonthlyPayment}`, { timeout: 1000 });
   console.log('Monthly Payment for', loanAmount, '+', loanPeriod, 'months:', expectedMonthlyPayment); // placeholder print
   await context.close();
 
@@ -123,7 +123,7 @@ test('Verifying decimal points can be used in loan amount', async ({ browser }) 
   
   //monthly payment verify check
   const monthlyPaymentLocator1 = await page.locator('.bb-labeled-value__value');
-  await expect(monthlyPaymentLocator1).toHaveText(`€${expectedMonthlyPayment}`, { timeout: 5000 });
+  await expect(monthlyPaymentLocator1).toHaveText(`€${expectedMonthlyPayment}`, { timeout: 1000 });
   console.log('Monthly Payment for', loanAmount, '+', loanPeriod, 'months:', expectedMonthlyPayment); // placeholder print
   await context.close();
 
