@@ -1,0 +1,546 @@
+{
+	"info": {
+		"_postman_id": "368529f8-ba95-4d61-a629-da1f3416fe05",
+		"name": "BigBank",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25963276"
+	},
+	"item": [
+		{
+			"name": "Positive cases",
+			"item": [
+				{
+					"name": "loanCalc_validResponseCheck",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//tests\r",
+									"pm.test(\"Status code is 200 OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verifing calculated response\", function () {\r",
+									"    const response = pm.response.json();\r",
+									"    const expectedTotalRepayableAmount = 5425.9;\r",
+									"    const expectedMonthlyPayment = 542.59;\r",
+									"    const expectedApr = 32.69;\r",
+									"\r",
+									"    pm.expect(response.totalRepayableAmount).to.eql(expectedTotalRepayableAmount);\r",
+									"    pm.expect(response.monthlyPayment).to.eql(expectedMonthlyPayment);\r",
+									"    pm.expect(response.apr).to.eql(expectedApr);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"currency\": \"EUR\",\r\n    \"productType\": \"SMALL_LOAN_EE01\",\r\n    \"maturity\": 10,\r\n    \"administrationFee\": 3.99,\r\n    \"conclusionFee\": 204.20000000000002,\r\n    \"amount\": 5000,\r\n    \"monthlyPaymentDay\": 15,\r\n    \"interestRate\": 16.8\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://taotlus.bigbank.ee/api/v1/loan/calculate",
+							"protocol": "https",
+							"host": [
+								"taotlus",
+								"bigbank",
+								"ee"
+							],
+							"path": [
+								"api",
+								"v1",
+								"loan",
+								"calculate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "loanCalc_validRandom",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//tests\r",
+									"pm.test(\"Status code is 200 OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"function randomRange(min, max) {\r",
+									"    return Math.random() * (max - min) + min;\r",
+									"}\r",
+									"\r",
+									"pm.environment.set(\"maturity\", Math.floor(randomRange(6, 121)));\r",
+									"pm.environment.set(\"administrationFee\", parseFloat(randomRange(1, 10).toFixed(2)));\r",
+									"pm.environment.set(\"conclusionFee\", parseFloat(randomRange(50, 300).toFixed(2)));\r",
+									"pm.environment.set(\"amount\", Math.floor(randomRange(5000, 30001)));\r",
+									"pm.environment.set(\"monthlyPaymentDay\", Math.floor(randomRange(1, 29)));\r",
+									"pm.environment.set(\"interestRate\", parseFloat(randomRange(1, 19).toFixed(1)));"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"currency\": \"EUR\",\r\n    \"productType\": \"SMALL_LOAN_EE01\",\r\n    \"maturity\": {{maturity}},\r\n    \"administrationFee\": {{administrationFee}},\r\n    \"conclusionFee\": {{conclusionFee}},\r\n    \"amount\": {{amount}},\r\n    \"monthlyPaymentDay\": {{monthlyPaymentDay}},\r\n    \"interestRate\": {{interestRate}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://taotlus.bigbank.ee/api/v1/loan/calculate",
+							"protocol": "https",
+							"host": [
+								"taotlus",
+								"bigbank",
+								"ee"
+							],
+							"path": [
+								"api",
+								"v1",
+								"loan",
+								"calculate"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Negative cases",
+			"item": [
+				{
+					"name": "loanCalc_invalidCurrency",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//tests\r",
+									"pm.test(\"Status code is 500 OK\", function () {\r",
+									"    pm.response.to.have.status(500);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"currency\": \"\",\r\n    \"productType\": \"SMALL_LOAN_EE01\",\r\n    \"maturity\": 1,\r\n    \"administrationFee\": 3.99,\r\n    \"conclusionFee\": 204.20000000000002,\r\n    \"amount\": 500,\r\n    \"monthlyPaymentDay\": 15,\r\n    \"interestRate\": 16.8\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://taotlus.bigbank.ee/api/v1/loan/calculate",
+							"protocol": "https",
+							"host": [
+								"taotlus",
+								"bigbank",
+								"ee"
+							],
+							"path": [
+								"api",
+								"v1",
+								"loan",
+								"calculate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "loanCalc_invalidproductType",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//tests\r",
+									"pm.test(\"Status code is 500 OK\", function () {\r",
+									"    pm.response.to.have.status(500);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"currency\": \"EUR\",\r\n    \"productType\": \"\",\r\n    \"maturity\": 1,\r\n    \"administrationFee\": 3.99,\r\n    \"conclusionFee\": 204.20000000000002,\r\n    \"amount\": 500,\r\n    \"monthlyPaymentDay\": 15,\r\n    \"interestRate\": 16.8\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://taotlus.bigbank.ee/api/v1/loan/calculate",
+							"protocol": "https",
+							"host": [
+								"taotlus",
+								"bigbank",
+								"ee"
+							],
+							"path": [
+								"api",
+								"v1",
+								"loan",
+								"calculate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "loanCalc_invalidMaturity",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//tests\r",
+									"pm.test(\"Status code is 500 OK\", function () {\r",
+									"    pm.response.to.have.status(500);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"currency\": \"EUR\",\r\n    \"productType\": \"SMALL_LOAN_EE01\",\r\n    \"maturity\": -1,\r\n    \"administrationFee\": 3.99,\r\n    \"conclusionFee\": 204.20000000000002,\r\n    \"amount\": 500,\r\n    \"monthlyPaymentDay\": 15,\r\n    \"interestRate\": 16.8\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://taotlus.bigbank.ee/api/v1/loan/calculate",
+							"protocol": "https",
+							"host": [
+								"taotlus",
+								"bigbank",
+								"ee"
+							],
+							"path": [
+								"api",
+								"v1",
+								"loan",
+								"calculate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "loanCalc_invalidConcFee",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//tests\r",
+									"pm.test(\"Status code is 500 OK\", function () {\r",
+									"    pm.response.to.have.status(500);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"currency\": \"EUR\",\r\n    \"productType\": \"SMALL_LOAN_EE01\",\r\n    \"maturity\": 50,\r\n    \"administrationFee\": 12,\r\n    \"conclusionFee\": -1,\r\n    \"amount\": 500,\r\n    \"monthlyPaymentDay\": 15,\r\n    \"interestRate\": 16.8\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://taotlus.bigbank.ee/api/v1/loan/calculate",
+							"protocol": "https",
+							"host": [
+								"taotlus",
+								"bigbank",
+								"ee"
+							],
+							"path": [
+								"api",
+								"v1",
+								"loan",
+								"calculate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "loanCalc_invalidAmount",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//tests\r",
+									"pm.test(\"Status code is 500 OK\", function () {\r",
+									"    pm.response.to.have.status(500);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"currency\": \"EUR\",\r\n    \"productType\": \"SMALL_LOAN_EE01\",\r\n    \"maturity\": 50,\r\n    \"administrationFee\": 12,\r\n    \"conclusionFee\": 1,\r\n    \"amount\": -500,\r\n    \"monthlyPaymentDay\": 15,\r\n    \"interestRate\": 16.8\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://taotlus.bigbank.ee/api/v1/loan/calculate",
+							"protocol": "https",
+							"host": [
+								"taotlus",
+								"bigbank",
+								"ee"
+							],
+							"path": [
+								"api",
+								"v1",
+								"loan",
+								"calculate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "loanCalc_invalidMonthlyPDay",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//tests\r",
+									"pm.test(\"Status code is 500 OK\", function () {\r",
+									"    pm.response.to.have.status(500);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"currency\": \"EUR\",\r\n    \"productType\": \"SMALL_LOAN_EE01\",\r\n    \"maturity\": 50,\r\n    \"administrationFee\": 12,\r\n    \"conclusionFee\": 1,\r\n    \"amount\": 5000,\r\n    \"monthlyPaymentDay\": 0,\r\n    \"interestRate\": 16.8\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://taotlus.bigbank.ee/api/v1/loan/calculate",
+							"protocol": "https",
+							"host": [
+								"taotlus",
+								"bigbank",
+								"ee"
+							],
+							"path": [
+								"api",
+								"v1",
+								"loan",
+								"calculate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "loanCalc_invalidFields",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//tests\r",
+									"pm.test(\"Status code is 400 OK\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verifiying expected mandatory fields\", function () {\r",
+									"    const response = pm.response.json();\r",
+									"    const expectedMsg = [\r",
+									"        \"should have required property 'currency'\",\r",
+									"        \"should have required property 'maturity'\",\r",
+									"        \"should have required property 'productType'\",\r",
+									"        \"should have required property 'amount'\",\r",
+									"        \"should have required property 'monthlyPaymentDay'\",\r",
+									"        \"should have required property 'interestRate'\",\r",
+									"        \"should have required property 'conclusionFee'\",\r",
+									"        \"should have required property 'administrationFee'\",\r",
+									"    ]\r",
+									"    \r",
+									"    expectedMsg.forEach(function (message) {\r",
+									"        pm.expect(JSON.stringify(response)).to.include(message);\r",
+									"    }\r",
+									"    );\r",
+									"\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://taotlus.bigbank.ee/api/v1/loan/calculate",
+							"protocol": "https",
+							"host": [
+								"taotlus",
+								"bigbank",
+								"ee"
+							],
+							"path": [
+								"api",
+								"v1",
+								"loan",
+								"calculate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "loanCalc_invalidStringsInts",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//tests\r",
+									"pm.test(\"Status code is 400 OK\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"currency\": 1, // Should be string\r\n    \"productType\": 2, // Should be string\r\n    \"maturity\": \"test1\", // Should be int\r\n    \"administrationFee\": \"test2\", // Should be int\r\n    \"conclusionFee\": \"test3\", // Should be int\r\n    \"amount\": \"test4\", // Should be int\r\n    \"monthlyPaymentDay\": \"test5\", // Should be int\r\n    \"interestRate\": \"test6\" // Should be int\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://taotlus.bigbank.ee/api/v1/loan/calculate",
+							"protocol": "https",
+							"host": [
+								"taotlus",
+								"bigbank",
+								"ee"
+							],
+							"path": [
+								"api",
+								"v1",
+								"loan",
+								"calculate"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
