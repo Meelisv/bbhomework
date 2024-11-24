@@ -42,5 +42,5 @@ export default defineConfig({
       },
     },
   ],
-  workers: 2, //slowing it down a bit
+  workers: 3, //slowing it down a bit
 });
