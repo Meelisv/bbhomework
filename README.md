@@ -8,5 +8,7 @@ Test execution:
 npx playwright test
 
 
+
 **Postman collection/environments in folder**:
-Postman
+
+PostmanCode
