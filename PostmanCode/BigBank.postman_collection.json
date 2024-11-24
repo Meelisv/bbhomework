@@ -23,9 +23,9 @@
 									"\r",
 									"pm.test(\"Verifing calculated response\", function () {\r",
 									"    const response = pm.response.json();\r",
-									"    const expectedTotalRepayableAmount = 5425.9;\r",
-									"    const expectedMonthlyPayment = 542.59;\r",
-									"    const expectedApr = 32.69;\r",
+									"    const expectedTotalRepayableAmount = 5251.65;\r",
+									"    const expectedMonthlyPayment = 875.28;\r",
+									"    const expectedApr = 24.78;\r",
 									"\r",
 									"    pm.expect(response.totalRepayableAmount).to.eql(expectedTotalRepayableAmount);\r",
 									"    pm.expect(response.monthlyPayment).to.eql(expectedMonthlyPayment);\r",
@@ -43,7 +43,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"currency\": \"EUR\",\r\n    \"productType\": \"SMALL_LOAN_EE01\",\r\n    \"maturity\": 10,\r\n    \"administrationFee\": 3.99,\r\n    \"conclusionFee\": 204.20000000000002,\r\n    \"amount\": 5000,\r\n    \"monthlyPaymentDay\": 15,\r\n    \"interestRate\": 16.8\r\n}",
+							"raw": "{\r\n    \"currency\": \"EUR\",\r\n    \"productType\": \"SMALL_LOAN_EE01\",\r\n    \"maturity\": 6,\r\n    \"administrationFee\": 3.99,\r\n    \"conclusionFee\": 45,\r\n    \"amount\": 5000,\r\n    \"monthlyPaymentDay\": 15,\r\n    \"interestRate\": 16.8\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
